@@ -40,7 +40,7 @@ void loop()
     return;
   }
   
-  if (!started) beginFireWorkSelection();
+  if (!started) beginFireworkSelection();
 
   if (digitalRead(btnSelect) == LOW) callSelect();
   if (digitalRead(btnLeft) == LOW) callLeft();
