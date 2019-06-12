@@ -5,23 +5,23 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 volatile bool splash = true;
-int started = false;
+volatile int started = false;
 
 int btnSelect = 2;
 int btnLeft = 3;
 int btnRight = 4;
 
-
 void setup()
 {
+  lcd.begin();
+  lcd.backlight();
+  
   Serial.begin(9600);
 
   pinMode(btnSelect, INPUT_PULLUP);
   pinMode(btnLeft, INPUT_PULLUP);
   pinMode(btnRight, INPUT_PULLUP);
 
-  lcd.begin();
-  lcd.backlight();
   setupInterrupt();
   loadCharacters();
 }
