@@ -1,4 +1,3 @@
-
 // Fireworks for start screen
 int Fireworks[][4] = {
   {2, -1, 10, 0},
@@ -10,6 +9,7 @@ int Fireworks[][4] = {
 void beginSplashScreen()
 {
   started = 1;
+  lcd.clear();
   lcd.home();
   lcd.print("Schmidty");
   lcd.setCursor(6,1);

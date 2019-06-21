@@ -9,7 +9,6 @@ uint8_t locked[8] = {0x4, 0xa, 0xa, 0x1f, 0x11, 0x11, 0x11, 0x1f};
 
 void loadCharacters()
 {
-  
   lcd.createChar(0, firework1);
   lcd.createChar(1, firework2);
   lcd.createChar(2, firework3);

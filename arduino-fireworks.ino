@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 
 // Set the LCD address to 0x27 for a 16 chars and 2 line display
 LiquidCrystal_I2C lcd(0x27, 16, 2);
@@ -22,7 +23,15 @@ void setup()
   pinMode(btnLeft, INPUT_PULLUP);
   pinMode(btnRight, INPUT_PULLUP);
 
+  // if LEFT is pressed while starting up, go to Admin menu
+  if (digitalRead(btnRight) == LOW) {
+    adminMenu();
+  }
+
+  // interrupt for exiting Splash Screen
   setupInterrupt();
+
+  // load special characters for fireworks
   loadCharacters();
 }
 
