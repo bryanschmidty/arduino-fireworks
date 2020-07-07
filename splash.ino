@@ -8,6 +8,7 @@ int Fireworks[][4] = {
 
 void beginSplashScreen()
 {
+  Serial.println("starting splash screen");
   started = 1;
   lcd.clear();
   lcd.home();

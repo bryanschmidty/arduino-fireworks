@@ -79,6 +79,7 @@ void displayFireworks()
     
     printFireworkAvailable();
   }
+  Serial.println("");
 }
 
 bool checkIfLaunched(int x)
@@ -105,6 +106,8 @@ bool checkIfLocked(int x)
 
 void printSelectCharacter()
 {
+  Serial.print("selected: ");
+  Serial.println(selectLocation + 1);
   lcd.setCursor(selectLocation, 1);
   lcd.write(94);
 }
@@ -117,25 +120,28 @@ void clearSelectCharacter()
 
 void printFireworkAvailable()
 {
+  Serial.print("o");
   lcd.print("o");
 }
 
 void printFireworkSpent()
 {
+  Serial.print("x");
   lcd.print("x");
 }
 
 void printFireworkLocked()
 {
+  Serial.print("L");
   lcd.write(6);
 }
 
-void moveSelection(int direction)
+bool moveSelection(int direction)
 {
   // set variable to new location and check if it is locked or if there is no change
   int newLocation = constrain(selectLocation + direction, 0, 15);
   if (checkIfLocked(newLocation) || newLocation == selectLocation) {
-    return;
+    return false;
   }
 
   // clear old location
@@ -144,6 +150,8 @@ void moveSelection(int direction)
   // set new location and write select character
   selectLocation = newLocation;
   printSelectCharacter();
+
+  return true;
 }
 
 void setFireworkLaunched(int x)
@@ -153,13 +161,13 @@ void setFireworkLaunched(int x)
   EEPROM.write(startAddress + x, currentByte);
 }
 
-void callSelect()
+bool callSelect()
 {
   // Don't do anything if the firework has already been launched
   if (checkIfLaunched(selectLocation)) {
     Serial.println("Already launched. skipping.");
     delay(200);
-    return;
+    return false;
   }
   
   // set this back to false so the selection menu will redraw when this is done
@@ -167,8 +175,12 @@ void callSelect()
 
   // run the countdown routine. If it returns true, then mark the firework as launched
   if (doCountdown()) {
+    igniteFirework(selectLocation + 1);
     setFireworkLaunched(selectLocation);
+    selectLocation += 1;
   }
+
+  return true;
 }
 
 bool doCountdown()
@@ -208,19 +220,25 @@ bool doCountdown()
   delay(1000); lcd.setCursor(6, 1); lcd.print("1");
   
   delay(1000); lcd.setCursor(9, 1); lcd.print("Launch!");
-  delay(1000);
   
   return true;
 }
 
-void callLeft()
+bool callLeft()
 {
-  moveSelection(-1);
+  bool success = moveSelection(-1);
   delay(200);
+  return success;
 }
 
 void callRight()
 {
   moveSelection(1);
   delay(200);
+}
+
+void forceRelaunch()
+{
+  Serial.print("Force Relaunch: ");
+  Serial.println(selectLocation);
 }

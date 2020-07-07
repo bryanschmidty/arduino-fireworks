@@ -16,6 +16,7 @@ void adminMenu()
   bool loopMenu = true;
   while (loopMenu) {
     if (!started) {
+      Serial.println("Starting Admin Menu");
       started = true;
       
       lcd.clear();
@@ -32,6 +33,7 @@ void adminMenu()
       currentOption = newOption;
       lcd.setCursor(2,1);
       lcd.print(menuOptions[currentOption]);
+      Serial.println(menuOptions[currentOption]);
     }
 
     if (digitalRead(btnSelect) == LOW) {
@@ -121,7 +123,7 @@ void writeSkipOutput()
 
 void doMenuReset()
 {
-  Serial.println("Reset");
+  Serial.println("Reset - L) yes, R) no");
   
   lcd.clear();
   lcd.home();
